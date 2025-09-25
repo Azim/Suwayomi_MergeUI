@@ -1,0 +1,19 @@
+query NewMangaChapters($today: LongString) {
+    chapters(
+        orderBy: FETCHED_AT
+        filter: {isDownloaded: {equalTo: true}, isRead: {equalTo: false}, inLibrary: {equalTo: true}, fetchedAt: {greaterThanOrEqualTo: $today}}
+    ) {
+        nodes {
+            id
+            mangaId
+            name
+            scanlator
+            manga {
+                sourceId
+                source {
+                    displayName
+                }
+            }
+        }
+    }
+}

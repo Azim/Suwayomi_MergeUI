@@ -1,0 +1,8 @@
+[versions]
+graphql = "8.8.1"
+
+[libraries]
+graphql-ktor = { module = "com.expediagroup:graphql-kotlin-ktor-client", version.ref = "graphql" }
+
+[plugins]
+graphql = { id = "com.expediagroup.graphql", version.ref = "graphql" }

@@ -3,6 +3,7 @@ package ru.frozenpriest
 import com.expediagroup.graphql.client.ktor.GraphQLKtorClient
 import com.expediagroup.graphql.client.serialization.GraphQLClientKotlinxSerializer
 import kotlinx.coroutines.runBlocking
+import ru.frozenpriest.generated.BuildConfig
 import ru.frozenpriest.generated.NewMangaChapters
 import java.net.URL
 
@@ -10,7 +11,7 @@ import java.net.URL
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
     val client = GraphQLKtorClient(
-        url = URL("http://192.168.50.182:4567/api/graphql"),
+        url = URL(BuildConfig.SUWAYOMI_URL),
         serializer = GraphQLClientKotlinxSerializer(),
     )
 

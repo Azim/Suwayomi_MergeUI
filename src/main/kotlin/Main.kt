@@ -3,15 +3,13 @@ package ru.frozenpriest
 import com.expediagroup.graphql.client.ktor.GraphQLKtorClient
 import com.expediagroup.graphql.client.serialization.GraphQLClientKotlinxSerializer
 import kotlinx.coroutines.runBlocking
-import ru.frozenpriest.generated.BuildConfig
+import ru.frozenpriest.environment.Environment
 import ru.frozenpriest.generated.NewMangaChapters
 import java.net.URL
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 fun main() {
     val client = GraphQLKtorClient(
-        url = URL(BuildConfig.SUWAYOMI_URL),
+        url = URL(Environment.SUWAYOMI_URL),
         serializer = GraphQLClientKotlinxSerializer(),
     )
 
@@ -19,4 +17,21 @@ fun main() {
         val result = client.execute(NewMangaChapters(NewMangaChapters.Variables(today = "0")))
         println(result.data?.chapters?.nodes?.joinToString(separator = "\n"))
     }
+
+    /**
+     * TODO: order of action
+     *      Our database --> contains links komga -- suwayomi one to many (only ids, maybe with priority)
+     *      Once every day (maybe) -- ideally after every suwayomi sync (check so it doesnt overlap)
+     *      0) add the ability to create manga in komga (maybe when komga id not set but suwa id set in db?)
+     *      1) iterate over every suwayomi manga in our database
+     *      2) update name/description/image/whatever inside komga
+     *      3) find all new chapters in suwayomi for this manga id
+     *      4) move them to komga adding source name and translator to metadata, mark chapter as read in suwa
+     *      -- Do we need time for getting new chapters? -- I think not, read mark is enough
+     *      -- Is it okey to use read as mark? -- maybe,
+     *          alternatives:
+     *          -- add tag to suwa?
+     *          -- add table of read chapter ids?
+     *
+     */
 }

@@ -23,6 +23,9 @@ graphql {
 
 dependencies {
     implementation(libs.graphql.ktor)
+    implementation(libs.graphql.serialization)
+    implementation(libs.kermit)
+
     testImplementation(kotlin("test"))
 }
 

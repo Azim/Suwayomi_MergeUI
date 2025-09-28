@@ -1,16 +1,17 @@
-query NewMangaChapters($today: LongString) {
+query NewMangaChapters {
     chapters(
         orderBy: FETCHED_AT
-        filter: {isDownloaded: {equalTo: true}, isRead: {equalTo: false}, inLibrary: {equalTo: true}, fetchedAt: {greaterThanOrEqualTo: $today}}
+        filter: {isDownloaded: {equalTo: true}, isRead: {equalTo: false}, inLibrary: {equalTo: true}}
     ) {
         nodes {
             id
-            mangaId
             name
             scanlator
             manga {
-                sourceId
+                id
+                title
                 source {
+                    id
                     displayName
                 }
             }

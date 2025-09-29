@@ -1,0 +1,12 @@
+CREATE TABLE Manga (
+    suwayomi_id INTEGER PRIMARY KEY NOT NULL,
+    komga_path TEXT NOT NULL
+);
+
+insertOrReplace:
+INSERT OR REPLACE INTO Manga (suwayomi_id, komga_path)
+VALUES (:suwayomiId, :komgaPath);
+
+getKomgaPath:
+SELECT komga_path FROM Manga
+WHERE suwayomi_id == :suwayomiId;

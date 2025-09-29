@@ -1,11 +1,14 @@
 [versions]
 graphql = "8.8.1"
 kermit = "2.0.4"
+sqldelight = "2.1.0"
 
 [libraries]
 graphql-ktor = { module = "com.expediagroup:graphql-kotlin-ktor-client", version.ref = "graphql" }
 graphql-serialization = { module = "com.expediagroup:graphql-kotlin-client-serialization", version.ref = "graphql" }
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+sqldelight-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
 
 [plugins]
 graphql = { id = "com.expediagroup.graphql", version.ref = "graphql" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }

@@ -1,8 +1,6 @@
 package ru.frozenpriest.tasks
 
-import ru.frozenpriest.SuwayomiApi
-import ru.frozenpriest.generated.NewMangaChapters
-
 suspend fun updateMangaMetadata() {
-    // TODO()
+    // TODO: maybe different task; find manga id in komga for file path that we added from suwa
+    //          for this use https://komga.org/docs/openapi/get-series with unpaged true and check 'url' field for path
 }

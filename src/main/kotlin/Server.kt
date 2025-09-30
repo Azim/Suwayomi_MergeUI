@@ -37,7 +37,7 @@ import ru.frozenpriest.api.SuwayomiApi
 import ru.frozenpriest.data.MangaWithSeries
 import ru.frozenpriest.db.Database
 
-suspend fun startServer() = embeddedServer(Netty, port = 8080) {
+suspend fun startServer() = embeddedServer(Netty, port = 5678) {
     install(ContentNegotiation)
     install(CallLogging)
     install(StatusPages) {

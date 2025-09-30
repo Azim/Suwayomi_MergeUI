@@ -1,6 +1,5 @@
 package ru.frozenpriest.environment
 
-
 object Environment {
 
     val SUWAYOMI_URL by lazy {

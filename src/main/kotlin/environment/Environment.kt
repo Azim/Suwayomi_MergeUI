@@ -22,6 +22,10 @@ object Environment {
     val KOMGA_LIBRARY_PATH by lazy {
         requireEnv("KOMGA_LIBRARY_PATH")
     }
+
+    val KOMGA_LIBRARY_NAME by lazy {
+        requireEnv("KOMGA_LIBRARY_NAME")
+    }
 }
 
 private fun requireEnv(name: String) = requireNotNull(System.getenv(name)) {

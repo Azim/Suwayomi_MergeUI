@@ -1,15 +1,17 @@
-package ru.frozenpriest
+package ru.frozenpriest.api
 
-import com.expediagroup.graphql.client.ktor.GraphQLKtorClient
 import com.expediagroup.graphql.client.serialization.GraphQLClientKotlinxSerializer
+import com.expediagroup.graphql.client.spring.GraphQLWebClient
 import ru.frozenpriest.data.Chapter
+import ru.frozenpriest.data.Manga
 import ru.frozenpriest.environment.Environment
+import ru.frozenpriest.generated.GetManga
+import ru.frozenpriest.generated.MarkChapterRead
 import ru.frozenpriest.generated.NewMangaChapters
-import java.net.URL
 
 data object SuwayomiApi {
-    private val client = GraphQLKtorClient(
-        url = URL(Environment.SUWAYOMI_URL),
+    private val client = GraphQLWebClient(
+        url = Environment.SUWAYOMI_URL,
         serializer = GraphQLClientKotlinxSerializer(),
     )
 
@@ -27,5 +29,21 @@ data object SuwayomiApi {
                 sourceName = source.displayName,
             )
         }
+    }
+
+    suspend fun markChapterRead(chapterId: Int) {
+        client.execute(request = MarkChapterRead(variables = MarkChapterRead.Variables(id = chapterId)))
+    }
+
+    suspend fun getAllManga(): List<Manga> {
+        return client.execute(request = GetManga()).data?.mangas?.nodes?.map {
+            val source = requireNotNull(it.source)
+            Manga(
+                suwayomiId = it.id,
+                title = it.title,
+                sourceName = source.name,
+                sourceId = source.id,
+            )
+        }.orEmpty()
     }
 }

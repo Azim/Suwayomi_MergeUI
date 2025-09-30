@@ -1,0 +1,7 @@
+mutation MarkChapterRead($id: Int!) {
+    updateChapter(input: {id: $id, patch: {isRead: true}}) {
+        chapter {
+            isRead
+        }
+    }
+}

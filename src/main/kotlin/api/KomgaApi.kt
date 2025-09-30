@@ -1,0 +1,51 @@
+package ru.frozenpriest.api
+
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.java.Java
+import io.ktor.client.plugins.HttpSend
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.plugin
+import io.ktor.client.plugins.resources.Resources
+import io.ktor.client.plugins.resources.get
+import io.ktor.client.plugins.resources.post
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
+import ru.frozenpriest.api.requests.GetListAllLibrariesRequest
+import ru.frozenpriest.api.requests.PostScanLibraryRequest
+import ru.frozenpriest.data.Library
+import ru.frozenpriest.environment.Environment
+
+data object KomgaApi {
+    private val client = HttpClient(Java) {
+        install(Resources)
+        install(ContentNegotiation) {
+            json(
+                Json {
+                    ignoreUnknownKeys = true
+                    isLenient = true
+                }
+            )
+        }
+        install(HttpTimeout)
+
+        defaultRequest {
+            url(Environment.KOMGA_URL)
+        }
+    }.apply {
+        plugin(HttpSend).intercept { request ->
+            request.headers.append("X-API-Key", Environment.KOMGA_API_KEY)
+            execute(request)
+        }
+    }
+
+    suspend fun getAllLibraries(): List<Library> {
+        return client.get(GetListAllLibrariesRequest).body()
+    }
+
+    suspend fun rescanLibrary(id: String) {
+        client.post(PostScanLibraryRequest(libraryId = id))
+    }
+}

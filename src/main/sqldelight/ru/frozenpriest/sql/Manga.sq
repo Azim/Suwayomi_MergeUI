@@ -10,3 +10,10 @@ VALUES (:suwayomiId, :komgaPath);
 getKomgaPath:
 SELECT komga_path FROM Manga
 WHERE suwayomi_id == :suwayomiId;
+
+getAll:
+SELECT * FROM Manga;
+
+remove:
+DELETE FROM Manga
+WHERE suwayomi_id == :suwayomiId;

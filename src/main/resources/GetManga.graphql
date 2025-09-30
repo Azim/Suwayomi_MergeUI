@@ -1,0 +1,15 @@
+query GetManga {
+    mangas(
+        orderBy: IN_LIBRARY_AT
+        filter: {inLibrary: {equalTo: true}}
+    ) {
+        nodes {
+            id
+            title
+            source {
+                name
+                id
+            }
+        }
+    }
+}

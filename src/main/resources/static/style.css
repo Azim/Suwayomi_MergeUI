@@ -1,0 +1,155 @@
+:root {
+    --primary: #4361ee;
+    --primary-dark: #3a56d4;
+    --success: #4cc9f0;
+    --danger: #f72585;
+    --warning: #ff9e00;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --gray: #6c757d;
+    --light-gray: #e9ecef;
+    --border: #dee2e6;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0.06);
+    --transition: all 0.2s ease;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+    margin: 0;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.editable-table {
+    width: 100%;
+    max-width: 70%;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    font-size: 15px;
+}
+
+.editable-table thead {
+    background: linear-gradient(120deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+}
+
+.editable-table th {
+    padding: 1.25rem 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 13px;
+    color: white;
+}
+
+.editable-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: var(--transition);
+}
+
+.editable-table tbody tr:hover {
+    background-color: rgba(67, 97, 238, 0.03);
+}
+
+.editable-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.editable-table td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.editable-table tbody td:first-child {
+    color: var(--primary);
+    font-weight: 600;
+    background-color: rgba(67, 97, 238, 0.05);
+}
+
+.editable-table td:nth-child(2),
+.editable-table td:nth-child(3) {
+    font-weight: 500;
+    color: var(--dark);
+    background-color: rgba(67, 97, 238, 0.05);
+}
+
+.editable-table td:nth-child(4),
+.editable-table td:nth-child(5) {
+    background-color: white;
+}
+
+.editable-table input {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border: 2px solid var(--light-gray);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: var(--transition);
+    background-color: white;
+}
+
+.editable-table input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+}
+
+button {
+    padding: 0.6rem 1.1rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.save-btn {
+    background: linear-gradient(120deg, var(--success) 0%, #3ab4d9 100%);
+    color: white;
+    box-shadow: 0 2px 4px rgba(76, 201, 240, 0.3);
+}
+
+.save-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(76, 201, 240, 0.4);
+}
+
+.reset-btn {
+    background: linear-gradient(120deg, #6c757d 0%, #5a6268 100%);
+    color: white;
+    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+}
+
+.reset-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+}
+
+.editable-table td:last-child {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}

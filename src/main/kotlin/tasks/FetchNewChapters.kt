@@ -30,9 +30,11 @@ suspend fun fetchNewChapters() = runCatching {
     }
     Logger.i { "Chapter update finished: ${chaptersWithKomga.count()} new chapters" }
 
-    val libraryId = KomgaApi.getAllLibraries().first { it.name == Environment.KOMGA_LIBRARY_NAME }.id
-    KomgaApi.rescanLibrary(libraryId)
-    Logger.i { "Komga rescan requested" }
+    if (chaptersWithKomga.isNotEmpty()) {
+        val libraryId = KomgaApi.getAllLibraries().first { it.name == Environment.KOMGA_LIBRARY_NAME }.id
+        KomgaApi.rescanLibrary(libraryId)
+        Logger.i { "Komga rescan requested" }
+    }
 }
 
 private fun Chapter.getFullKomgaFilePath(): Path? {

@@ -1,7 +1,8 @@
 package ru.frozenpriest.api
 
+import com.expediagroup.graphql.client.ktor.GraphQLKtorClient
 import com.expediagroup.graphql.client.serialization.GraphQLClientKotlinxSerializer
-import com.expediagroup.graphql.client.spring.GraphQLWebClient
+import java.net.URI
 import ru.frozenpriest.data.Chapter
 import ru.frozenpriest.data.Manga
 import ru.frozenpriest.environment.Environment
@@ -10,8 +11,8 @@ import ru.frozenpriest.generated.MarkChapterRead
 import ru.frozenpriest.generated.NewMangaChapters
 
 data object SuwayomiApi {
-    private val client = GraphQLWebClient(
-        url = Environment.SUWAYOMI_URL,
+    private val client = GraphQLKtorClient(
+        url = URI.create("${Environment.SUWAYOMI_URL}/api/graphql").toURL(),
         serializer = GraphQLClientKotlinxSerializer(),
     )
 

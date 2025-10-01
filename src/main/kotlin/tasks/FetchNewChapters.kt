@@ -1,8 +1,9 @@
 package ru.frozenpriest.tasks
 
 import co.touchlab.kermit.Logger
-import java.nio.file.Files
 import java.nio.file.Path
+import kotlin.io.path.createParentDirectories
+import kotlin.io.path.moveTo
 import ru.frozenpriest.api.KomgaApi
 import ru.frozenpriest.api.SuwayomiApi
 import ru.frozenpriest.data.Chapter
@@ -22,7 +23,8 @@ suspend fun fetchNewChapters() = runCatching {
     chaptersWithKomga.forEach { (chapter, komgaFilePath) ->
         val suwayomiFilePath = chapter.suwayomiFilePath()
         Logger.d { "Moving chapter from $suwayomiFilePath to $komgaFilePath" }
-        Files.move(suwayomiFilePath, komgaFilePath)
+        komgaFilePath.createParentDirectories()
+        suwayomiFilePath.moveTo(komgaFilePath)
 
         SuwayomiApi.markChapterRead(chapterId = chapter.chapterId)
     }

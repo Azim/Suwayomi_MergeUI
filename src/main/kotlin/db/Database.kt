@@ -8,7 +8,7 @@ import ru.frozenpriest.data.MangaSeriesLink
 
 object Database {
     private val driver: SqlDriver by lazy {
-        JdbcSqliteDriver("jdbc:sqlite:manga.db", Properties(), Database.Schema)
+        JdbcSqliteDriver("jdbc:sqlite:config/manga.db", Properties(), Database.Schema)
     }
 
     private val instance by lazy {

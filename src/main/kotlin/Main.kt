@@ -1,5 +1,6 @@
 package ru.frozenpriest
 
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
@@ -15,11 +16,16 @@ fun main(): Unit = runBlocking {
         startServer()
     }
     coroutineScope.launch {
-        fetchNewChapters()
+        fetchNewChapters().onFailure {
+            Logger.e(it) { "Failed to fetch new chapters" }
+            throw it
+        }
         updateMangaMetadata()
     }
 
     launch {
-        while (true) { delay(1000) }
+        while (true) {
+            delay(1000)
+        }
     }
 }

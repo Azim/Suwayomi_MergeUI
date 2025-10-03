@@ -42,7 +42,7 @@ suspend fun startServer() = embeddedServer(Netty, port = 5678) {
     install(CallLogging)
     install(StatusPages) {
         exception<Throwable> { call, cause ->
-            Logger.e(cause) { "Unhandled exception" }
+            Logger.e(cause) { "Received server exception" }
             call.respondText(
                 text = "Internal Server Error: ${cause.message}",
                 contentType = ContentType.Text.Plain,
@@ -52,32 +52,34 @@ suspend fun startServer() = embeddedServer(Netty, port = 5678) {
     }
 
     routing {
-        staticResources("/static", "static")
+        apiEndpoints()
         linkTable()
-
-        // API Endpoints
-        post("/api/records") {
-            val params = call.receiveParameters()
-            val suwayomiId = params["suwayomiId"]?.toIntOrNull()
-            val komgaPath = params["komgaPath"]
-            val priority = params["priority"]?.toIntOrNull()
-
-            if (suwayomiId != null && komgaPath != null && priority != null) {
-                Database.insertPath(suwayomiId, komgaPath)
-                call.respond(HttpStatusCode.Created)
-            } else {
-                call.respond(HttpStatusCode.BadRequest)
-            }
-        }
-
-        delete("/api/records/{suwayomiId}") {
-            val suwayomiId = call.parameters["suwayomiId"]?.toIntOrNull()
-                ?: return@delete call.respond(HttpStatusCode.BadRequest)
-            Database.remove(suwayomiId = suwayomiId)
-            call.respond(HttpStatusCode.OK)
-        }
+        staticResources("/static", "static")
     }
 }.startSuspend(wait = true)
+
+private fun Routing.apiEndpoints() {
+    post("/api/records") {
+        val params = call.receiveParameters()
+        val suwayomiId = params["suwayomiId"]?.toIntOrNull()
+        val komgaPath = params["komgaPath"]
+        val priority = params["priority"]?.toIntOrNull()
+
+        if (suwayomiId != null && komgaPath != null && priority != null) {
+            Database.insertPath(suwayomiId, komgaPath)
+            call.respond(HttpStatusCode.Created)
+        } else {
+            call.respond(HttpStatusCode.BadRequest)
+        }
+    }
+
+    delete("/api/records/{suwayomiId}") {
+        val suwayomiId = call.parameters["suwayomiId"]?.toIntOrNull()
+            ?: return@delete call.respond(HttpStatusCode.BadRequest)
+        Database.remove(suwayomiId = suwayomiId)
+        call.respond(HttpStatusCode.OK)
+    }
+}
 
 private fun Routing.linkTable() {
     get("/") {

@@ -6,12 +6,16 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import ru.frozenpriest.environment.Environment
 import ru.frozenpriest.tasks.fetchNewChapters
+import ru.frozenpriest.tasks.updateMangaCovers
 import ru.frozenpriest.tasks.updateMangaMetadata
 
 private val coroutineScope = CoroutineScope(SupervisorJob())
 
 fun main(): Unit = runBlocking {
+    Logger.setMinSeverity(Environment.SEVERITY)
+
     coroutineScope.launch {
         startServer()
     }
@@ -20,6 +24,7 @@ fun main(): Unit = runBlocking {
             Logger.e(it) { "Failed to fetch new chapters" }
             throw it
         }
+        updateMangaCovers()
         updateMangaMetadata()
     }
 

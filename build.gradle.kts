@@ -18,6 +18,14 @@ repositories {
     mavenCentral()
 }
 
+kotlin {
+    compilerOptions {
+        optIn = listOf(
+            "kotlin.time.ExperimentalTime",
+        )
+    }
+}
+
 graphql {
     client {
         schemaFile = File("schema.graphql")
@@ -38,9 +46,15 @@ ktor {
     docker {
         localImageName.set("suwauser-docker")
         imageTag.set("0.0.1-preview")
-        portMappings.set(listOf(
-            DockerPortMapping(outsideDocker = 5678, insideDocker = 5678, protocol = DockerPortMappingProtocol.TCP)
-        ))
+        portMappings.set(
+            listOf(
+                DockerPortMapping(
+                    outsideDocker = 5678,
+                    insideDocker = 5678,
+                    protocol = DockerPortMappingProtocol.TCP,
+                )
+            )
+        )
         externalRegistry.set(
             DockerImageRegistry.dockerHub(
                 appName = provider { "suwauser" },
@@ -60,6 +74,7 @@ dependencies {
     implementation(libs.ktor.client.contentNegotiation)
     implementation(libs.ktor.serialization.json)
     implementation(libs.ktor.client.resources)
+    implementation(libs.ktor.client.logging)
 
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
@@ -70,6 +85,7 @@ dependencies {
 
     implementation(libs.sqldelight.driver)
     implementation(libs.kermit)
+    implementation(libs.kotlin.datetime)
 
     testImplementation(kotlin("test"))
 }

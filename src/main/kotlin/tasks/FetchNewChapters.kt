@@ -12,6 +12,7 @@ import ru.frozenpriest.data.suwayomiFilePath
 import ru.frozenpriest.db.Database
 import ru.frozenpriest.environment.Environment
 import ru.frozenpriest.utils.runCatching
+import ru.frozenpriest.utils.updateScanlator
 
 suspend fun fetchNewChapters() = runCatching {
     val chapters = SuwayomiApi.fetchUnreadDownloadedChapters()
@@ -25,6 +26,7 @@ suspend fun fetchNewChapters() = runCatching {
         Logger.d { "Moving chapter from $suwayomiFilePath to $komgaFilePath" }
         komgaFilePath.createParentDirectories()
         suwayomiFilePath.moveTo(komgaFilePath)
+        komgaFilePath.updateScanlator(chapter.sourceName, chapter.scanlator)
 
         SuwayomiApi.markChapterRead(chapterId = chapter.chapterId)
     }

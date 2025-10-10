@@ -13,6 +13,7 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.plugin
 import io.ktor.client.plugins.resources.Resources
 import io.ktor.client.plugins.resources.get
+import io.ktor.client.plugins.resources.patch
 import io.ktor.client.plugins.resources.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -20,12 +21,14 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import ru.frozenpriest.api.requests.GetListAllLibrariesRequest
+import ru.frozenpriest.api.requests.PatchUpdateSeriesMetadataRequest
 import ru.frozenpriest.api.requests.PostListSeriesRequest
 import ru.frozenpriest.api.requests.PostRefreshSeriesMetadataRequest
 import ru.frozenpriest.api.requests.PostScanLibraryRequest
 import ru.frozenpriest.api.responses.PostListSeriesResponse
 import ru.frozenpriest.data.KomgaSeries
 import ru.frozenpriest.data.Library
+import ru.frozenpriest.data.MangaMetadata
 import ru.frozenpriest.environment.Environment
 import co.touchlab.kermit.Logger as Kermit
 
@@ -79,5 +82,12 @@ data object KomgaApi {
 
     suspend fun refreshSeriesMetadata(seriesId: String) {
         client.post(PostRefreshSeriesMetadataRequest(seriesId))
+    }
+
+    suspend fun updateSeriesMetadata(seriesId: String, mangaMetadata: MangaMetadata) {
+        client.patch(PatchUpdateSeriesMetadataRequest(seriesId)) {
+            contentType(ContentType.Application.Json)
+            setBody(Json.encodeToString(PatchUpdateSeriesMetadataRequest.Body(mangaMetadata)))
+        }
     }
 }

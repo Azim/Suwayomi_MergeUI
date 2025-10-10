@@ -3,12 +3,16 @@ package ru.frozenpriest.api
 import com.expediagroup.graphql.client.ktor.GraphQLKtorClient
 import com.expediagroup.graphql.client.serialization.GraphQLClientKotlinxSerializer
 import java.net.URI
-import ru.frozenpriest.data.Chapter
-import ru.frozenpriest.data.Manga
-import ru.frozenpriest.environment.Environment
-import ru.frozenpriest.generated.GetManga
+import ru.frozenpriest.generated.GetAllMangas
+import ru.frozenpriest.generated.GetMangaMetadataById
 import ru.frozenpriest.generated.MarkChapterRead
 import ru.frozenpriest.generated.NewMangaChapters
+import ru.frozenpriest.data.Chapter
+import ru.frozenpriest.data.Manga
+import ru.frozenpriest.data.MangaMetadata
+import ru.frozenpriest.data.MangaStatus
+import ru.frozenpriest.environment.Environment
+import ru.frozenpriest.generated.enums.MangaStatus as SuwayomiMangaStatus
 
 data object SuwayomiApi {
     private val client = GraphQLKtorClient(
@@ -37,7 +41,7 @@ data object SuwayomiApi {
     }
 
     suspend fun getAllManga(): List<Manga> {
-        return client.execute(request = GetManga()).data?.mangas?.nodes?.map {
+        return client.execute(request = GetAllMangas()).data?.mangas?.nodes?.map {
             val source = requireNotNull(it.source)
             Manga(
                 suwayomiId = it.id,
@@ -46,5 +50,26 @@ data object SuwayomiApi {
                 sourceId = source.id,
             )
         }.orEmpty()
+    }
+
+    suspend fun getMangaMetadata(mangaId: Int): MangaMetadata {
+        return client.execute(request = GetMangaMetadataById(variables = GetMangaMetadataById.Variables(id = mangaId)))
+            .data?.mangas?.nodes?.first()?.let {
+                MangaMetadata(
+                    title = it.title,
+                    description = it.description,
+                    genre = it.genre,
+                    status = when (it.status) {
+                        SuwayomiMangaStatus.CANCELLED -> MangaStatus.ABANDONED
+                        SuwayomiMangaStatus.COMPLETED -> MangaStatus.ENDED
+                        SuwayomiMangaStatus.ONGOING -> MangaStatus.ONGOING
+                        SuwayomiMangaStatus.ON_HIATUS -> MangaStatus.HIATUS
+                        SuwayomiMangaStatus.PUBLISHING_FINISHED -> MangaStatus.ENDED
+                        SuwayomiMangaStatus.LICENSED -> null
+                        SuwayomiMangaStatus.UNKNOWN -> null
+                        SuwayomiMangaStatus.__UNKNOWN_VALUE -> null
+                    },
+                )
+            } ?: error("No manga with manga id $mangaId found")
     }
 }

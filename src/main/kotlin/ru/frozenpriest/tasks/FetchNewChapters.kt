@@ -11,10 +11,9 @@ import ru.frozenpriest.data.komgaFilePath
 import ru.frozenpriest.data.suwayomiFilePath
 import ru.frozenpriest.db.Database
 import ru.frozenpriest.environment.Environment
-import ru.frozenpriest.utils.runCatching
 import ru.frozenpriest.utils.updateScanlator
 
-suspend fun fetchNewChapters() = runCatching {
+suspend fun fetchNewChapters() {
     val chapters = SuwayomiApi.fetchUnreadDownloadedChapters()
     Logger.i { "Checking new chapters in suwayomi: ${chapters.size} new chapters found" }
     val chaptersWithKomga = chapters.mapNotNull { chapter ->

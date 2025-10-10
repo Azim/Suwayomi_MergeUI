@@ -1,0 +1,10 @@
+query GetMangaMetadataById($id: Int!) {
+    mangas(filter: {id: {equalTo: $id}}) {
+        nodes {
+            title
+            description
+            genre
+            status
+        }
+    }
+}

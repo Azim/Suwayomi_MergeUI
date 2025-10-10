@@ -20,10 +20,7 @@ fun main(): Unit = runBlocking {
         startServer()
     }
     coroutineScope.launch {
-        fetchNewChapters().onFailure {
-            Logger.e(it) { "Failed to fetch new chapters" }
-            throw it
-        }
+        fetchNewChapters()
         updateMangaCovers()
         updateMangaMetadata()
     }

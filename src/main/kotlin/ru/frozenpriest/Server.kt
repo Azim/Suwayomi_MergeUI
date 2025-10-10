@@ -59,7 +59,7 @@ suspend fun startServer() = embeddedServer(Netty, port = 5678) {
 }.startSuspend(wait = true)
 
 private fun Routing.apiEndpoints() {
-    post("/api/records") {
+    post("//api/records") {
         val params = call.receiveParameters()
         val suwayomiId = params["suwayomiId"]?.toIntOrNull()
         val komgaPath = params["komgaPath"]
@@ -73,7 +73,7 @@ private fun Routing.apiEndpoints() {
         }
     }
 
-    delete("/api/records/{suwayomiId}") {
+    delete("//api/records/{suwayomiId}") {
         val suwayomiId = call.parameters["suwayomiId"]?.toIntOrNull()
             ?: return@delete call.respond(HttpStatusCode.BadRequest)
         Database.remove(suwayomiId = suwayomiId)

@@ -11,7 +11,6 @@ plugins {
     alias(libs.plugins.ktor)
 }
 
-group = "ru.frozenpriest"
 version = "1.0-SNAPSHOT"
 
 repositories {

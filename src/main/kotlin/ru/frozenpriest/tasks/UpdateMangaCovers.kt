@@ -1,7 +1,6 @@
 package ru.frozenpriest.tasks
 
 import co.touchlab.kermit.Logger
-import java.io.File
 import java.nio.file.Paths
 import java.nio.file.attribute.BasicFileAttributes
 import kotlin.io.path.copyTo
@@ -13,9 +12,9 @@ import kotlin.io.path.useDirectoryEntries
 import kotlin.time.Clock
 import kotlin.time.Instant
 import ru.frozenpriest.api.KomgaApi
-import ru.frozenpriest.data.KomgaSeries
 import ru.frozenpriest.db.Database
 import ru.frozenpriest.environment.Environment
+import ru.frozenpriest.utils.getSeriesIdByPath
 
 suspend fun updateMangaCovers(clock: Clock = Clock.System) {
     Logger.i { "Checking new thumbnails in suwayomi" }
@@ -60,7 +59,3 @@ suspend fun updateMangaCovers(clock: Clock = Clock.System) {
             }
         }
 }
-
-private fun List<KomgaSeries>.getSeriesIdByPath(path: String): String? = firstOrNull { series ->
-    series.url.split(File.separator).last() == path
-}?.id
